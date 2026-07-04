@@ -21,8 +21,14 @@ async def listar_transacciones(sesion: Sesion_dependencia):
 
 
 @rutas_transacciones.get("/transacciones/{id_transaccion}", response_model=Transaccion)
-async def listar_transaccion(id_transaccion: int):
-    pass
+async def listar_transaccion(id_transaccion: int, mi_sesion: Sesion_dependencia):
+    transaccion_bd = mi_sesion.get(Transaccion, id_transaccion)
+    if not transaccion_bd:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"La transacción con id {id_transaccion}, no existe."
+        )
+    return transaccion_bd
 
 
 @rutas_transacciones.post("/transacciones/{factura_id}", response_model=Transaccion)
