@@ -19,7 +19,8 @@ class FacturaBase(SQLModel):
     @property
     def vr_total(self) -> float:
         total_factura = 0.0
-        if self.transacciones == None:
+        transacciones = getattr(self, 'transacciones', None)
+        if transacciones is None:
             return total_factura
         #Recorrer la lista de transacciones, según el factura_id
         for transaccion in self.transacciones:
